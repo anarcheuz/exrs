@@ -1,0 +1,14 @@
+House of spirit concept 32 bits - Poc might see day if I have some time
+Goal: force malloc to give an arbitrary address by forcing that adress in a fastbin
+condition:  the targeted call to malloc must have size N <= 64 (max_fastbin)
+            be able to pass arbitrary ptr to free() and control 2 words aroud that zone :
+
+word1 (size = N+8)
+... <- ptr points to zone just after the word1 size
+target
+...
+word2 ( 8 < size < av->system)
+
+word1 and word2 must be apart of exactly N+8 bytes.
+
+Next call to malloc will return the ptr passed to free.
